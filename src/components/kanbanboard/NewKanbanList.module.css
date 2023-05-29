@@ -1,0 +1,16 @@
+.new-list-button {
+  width: 250px;
+  border-style: dashed;
+  border-color: var(--clr-text);
+  cursor: pointer;
+  color: var(--clr-text);
+  background-color: var(--clr-kanban-bg);
+  font-size: 1.3rem;
+}
+
+.new-list-button:hover {
+  border-style: groove;
+  border-color: rgb(99, 99, 255);
+  transition: all 0.2s ease-in;
+  background-color: #7a7a7a;
+}

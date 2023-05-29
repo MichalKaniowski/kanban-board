@@ -1,0 +1,11 @@
+.body {
+  background-color: var(--clr-bg);
+  min-height: 100vh;
+  padding: 40px 60px;
+}
+
+.main {
+  display: grid;
+  grid-template-columns: 1fr 4fr;
+  box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+}

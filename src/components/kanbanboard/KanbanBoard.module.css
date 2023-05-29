@@ -1,0 +1,24 @@
+.kanban-board {
+  background-color: var(--clr-kanban-bg);
+  padding: 10px 20px;
+}
+
+.main-heading {
+  color: var(--clr-text);
+  margin-bottom: 30px;
+}
+
+.row {
+  display: grid;
+  grid-template-columns: 5fr 1fr;
+}
+
+.lists-container {
+  display: flex;
+  gap: 10px;
+  overflow-x: auto;
+}
+
+/* .lists-container div {
+  display: inline-block;
+} */

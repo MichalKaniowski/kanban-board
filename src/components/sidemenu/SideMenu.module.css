@@ -1,0 +1,15 @@
+.side-menu {
+  background-color: var(--clr-menu-bg);
+  /* box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px; */
+  box-shadow: 2px 2px 27px -16px rgba(66, 68, 90, 1);
+  z-index: 1;
+}
+
+.brand {
+  margin-bottom: 25px;
+  color: var(--clr-text);
+}
+
+.menu-list {
+  list-style: none;
+}
