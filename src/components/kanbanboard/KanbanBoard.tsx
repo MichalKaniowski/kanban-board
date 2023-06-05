@@ -7,6 +7,7 @@ import { KanbanContext } from "../../store/KanbanContext";
 
 export default function KanbanBoard() {
   const kanbanContext = useContext(KanbanContext);
+  const kanbanListsLength = kanbanContext.lists.length;
 
   useEffect(() => {
     const listsContainer = document.querySelector(
@@ -19,7 +20,7 @@ export default function KanbanBoard() {
 
     const lastItem = listsContainer.children[listsLength - 1];
     lastItem.scrollIntoView({ behavior: "smooth", inline: "end" });
-  }, [kanbanContext.lists]);
+  }, [kanbanListsLength]);
 
   const lists = kanbanContext.lists;
 
