@@ -15,10 +15,7 @@
 
 .lists-container {
   display: flex;
+  align-items: flex-start;
   gap: 10px;
   overflow-x: auto;
 }
-
-/* .lists-container div {
-  display: inline-block;
-} */

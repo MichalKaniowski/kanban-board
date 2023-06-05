@@ -7,6 +7,14 @@
   cursor: pointer;
 }
 
+.item.active {
+  background-color: red;
+}
+
+.active {
+  background-color: red;
+}
+
 .item:hover {
   background-color: var(--clr-kanban-list-bg);
 }

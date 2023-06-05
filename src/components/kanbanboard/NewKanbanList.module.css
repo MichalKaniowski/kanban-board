@@ -1,16 +1,19 @@
 .new-list-button {
   width: 250px;
+  min-height: 150px;
+  max-height: 300px;
   border-style: dashed;
   border-color: var(--clr-text);
   cursor: pointer;
   color: var(--clr-text);
   background-color: var(--clr-kanban-bg);
   font-size: 1.3rem;
+  color: var(--clr-text);
 }
 
 .new-list-button:hover {
+  color: var(--clr-text);
   border-style: groove;
-  border-color: rgb(99, 99, 255);
   transition: all 0.2s ease-in;
-  background-color: #7a7a7a;
+  background-color: var(--clr-kanban-list-bg);
 }

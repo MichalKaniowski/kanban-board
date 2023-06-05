@@ -1,9 +1,11 @@
 .container {
   min-width: 250px;
+  min-height: 200px;
   background-color: var(--clr-kanban-list-bg);
   color: var(--clr-text);
   padding: 7px;
   position: relative;
+  transition: opacity 500ms forwards;
 }
 
 .container input {
@@ -11,16 +13,32 @@
   border: none;
   background-color: inherit;
   font-size: 1.2rem;
-  width: 200px;
+  width: calc(100% - 65px);
+  color: var(--clr-text);
 }
 
 .container button {
-  position: absolute;
-  top: 5px;
-  right: 10px;
   padding: 1px 5px;
   font-size: 1.1rem;
   cursor: pointer;
+  background-color: inherit;
+  border: none;
+}
+
+.add-task-button {
+  position: absolute;
+  top: 5px;
+  right: 40px;
+}
+
+.delete-list-button {
+  position: absolute;
+  top: 5px;
+  right: 10px;
+}
+
+.icon {
+  color: var(--clr-text);
 }
 
 .container li {
@@ -33,20 +51,45 @@
 .container li p {
   margin-bottom: 10px;
   color: var(--clr-text);
+  max-width: 175px;
+  word-break: break-word;
 }
 
 .category {
   display: inline-block;
-  background-color: yellow;
-  color: #000;
+  color: #fff;
   padding: 2px 5px;
   border-radius: 5px;
   font-size: 0.9rem;
   font-weight: 500;
 }
 
+.category.feature {
+  background-color: green;
+}
+
+.category.refactor {
+  background-color: rgb(106, 106, 255);
+}
+
+.category.bug {
+  background-color: purple;
+}
+
+.category.other {
+  background-color: rgb(155, 155, 0);
+}
+
 .edit-button {
   position: absolute;
   top: 5px;
   right: 5px;
+}
+
+.animation {
+  opacity: 0;
+}
+
+.animation-end {
+  opacity: 1;
 }

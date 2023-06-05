@@ -26,8 +26,8 @@ ul {
   --clr-text: #fff;
   --clr-bg: rgb(59, 59, 59);
   --clr-menu-text: rgb(124, 124, 124);
-  --clr-menu-bg: rgb(44, 44, 44);
-  --clr-kanban-bg: rgb(32, 32, 32);
+  --clr-menu-bg: rgb(49, 49, 49);
+  --clr-kanban-bg: rgb(39, 39, 39);
   --clr-kanban-list-bg: rgb(95, 95, 95);
   /* categorie colors */
 }
@@ -37,23 +37,28 @@ ul {
   justify-content: center;
 }
 
-.backdrop {
-  position: absolute;
-  top: 0;
-  right: 0;
-  bottom: 0;
-  left: 0;
-  background-color: #000;
-  z-index: 5;
-  opacity: 0.8;
-}
-
 .modal {
   position: absolute;
   top: 25%;
   z-index: 10;
 }
 
+.modal[open] {
+  animation: fade-in 500ms forwards;
+}
+
 .modal-heading {
   color: var(--clr-bg);
+  margin-bottom: 15px;
+  font-size: 1.4rem;
+}
+
+@keyframes fade-in {
+  0% {
+    opacity: 0;
+  }
+
+  100% {
+    opacity: 1;
+  }
 }

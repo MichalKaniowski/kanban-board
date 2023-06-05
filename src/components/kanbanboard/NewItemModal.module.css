@@ -1,1 +1,80 @@
+.modal {
+  background-color: rgb(83, 83, 83);
+  min-width: 400px;
+  min-height: 300px;
+  padding: 10px 20px;
+  border-radius: 10px;
+  color: #fff;
+}
 
+.modal h3 {
+  color: inherit;
+}
+
+.modal input,
+.modal textarea {
+  display: block;
+  margin-bottom: 10px;
+  padding: 5px;
+  margin-top: 3px;
+  font-size: 1rem;
+}
+
+.modal input {
+  min-width: 180px;
+}
+
+.categories {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 60px;
+}
+
+.categories li {
+  border: 1px solid;
+  padding: 5px;
+  cursor: pointer;
+}
+
+.active-category.feature {
+  background-color: green;
+}
+
+.active-category.refactor {
+  background-color: rgb(106, 106, 255);
+}
+
+.active-category.bug {
+  background-color: purple;
+}
+
+.active-category.other {
+  background-color: rgb(155, 155, 0);
+}
+
+.task-category-heading {
+  margin-bottom: 3px;
+}
+
+.add-task-button {
+  position: absolute;
+  right: 15px;
+  bottom: 15px;
+  padding: 7px 20px;
+  border-radius: 3px;
+  border: none;
+  cursor: pointer;
+  font-size: 0.95rem;
+}
+
+.close-modal-button {
+  position: absolute;
+  top: 5px;
+  right: 15px;
+  background-color: inherit;
+  border: none;
+  color: #fff;
+  font-size: 1.1rem;
+  cursor: pointer;
+  padding: 5px;
+}
