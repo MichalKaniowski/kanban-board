@@ -42,6 +42,7 @@ export default function KanbanList({ id, name, items }: List) {
       setIsModalDisplayed(true);
       setEditingItem(item);
     } else {
+      setEditingItem(null);
       setIsModalDisplayed(true);
     }
   }
