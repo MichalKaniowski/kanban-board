@@ -5,14 +5,11 @@
   align-items: center;
   gap: 5px;
   cursor: pointer;
+  margin-bottom: 10px;
 }
 
 .item.active {
-  background-color: red;
-}
-
-.active {
-  background-color: red;
+  background-color: var(--clr-kanban-list-bg);
 }
 
 .item:hover {

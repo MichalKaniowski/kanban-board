@@ -1,5 +1,4 @@
 import { nanoid } from "nanoid";
-import ReactDOM from "react-dom";
 import { useState, useRef, useEffect, useContext } from "react";
 import styles from "./Kanbanlist.module.css";
 import NewItemModal from "./NewItemModal";
@@ -64,40 +63,28 @@ export default function KanbanList({ id, name, items }: List) {
     setIsModalDisplayed(false);
   }
 
-  const rootOverlay = document.querySelector("#root-overlay") as Element;
-
   return (
     <div className={styles.container}>
-      {isModalDisplayed &&
-        !editingItem &&
-        !error &&
-        ReactDOM.createPortal(
-          <NewItemModal
-            onItemAdd={addItemHandler}
-            onClose={() => setIsModalDisplayed(false)}
-            onItemError={itemErrorHandler}
-          />,
-          rootOverlay
-        )}
+      {isModalDisplayed && !editingItem && !error && (
+        <NewItemModal
+          onItemAdd={addItemHandler}
+          onClose={() => setIsModalDisplayed(false)}
+          onItemError={itemErrorHandler}
+        />
+      )}
 
-      {isModalDisplayed &&
-        editingItem &&
-        !error &&
-        ReactDOM.createPortal(
-          <NewItemModal
-            editingItem={editingItem}
-            onItemEdit={editItemHandler}
-            onClose={() => setIsModalDisplayed(false)}
-            onItemError={itemErrorHandler}
-          />,
-          rootOverlay
-        )}
+      {isModalDisplayed && editingItem && !error && (
+        <NewItemModal
+          editingItem={editingItem}
+          onItemEdit={editItemHandler}
+          onClose={() => setIsModalDisplayed(false)}
+          onItemError={itemErrorHandler}
+        />
+      )}
 
-      {error &&
-        ReactDOM.createPortal(
-          <Modal type="error" message={error} onClose={closeModalHandler} />,
-          rootOverlay
-        )}
+      {error && (
+        <Modal type="error" message={error} onClose={closeModalHandler} />
+      )}
 
       <form onSubmit={nameChangeHandler}>
         <input ref={inputRef} />

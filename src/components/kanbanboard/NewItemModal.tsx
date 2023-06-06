@@ -1,5 +1,6 @@
 import { nanoid } from "nanoid";
 import styles from "./NewItemModal.module.css";
+import ReactDOM from "react-dom";
 import { useState, useRef, useEffect } from "react";
 import { ListItem } from "./KanbanBoard.types";
 import Backdrop from "../ui/Backdrop";
@@ -135,10 +136,14 @@ export default function NewItemModal(props: Props) {
     </div>
   );
 
-  return (
+  const modal = (
     <>
       <Backdrop onClose={props.onClose} />
       {newItemModal}
     </>
   );
+
+  const rootOverlay = document.querySelector("#root-overlay") as Element;
+
+  return ReactDOM.createPortal(modal, rootOverlay);
 }
