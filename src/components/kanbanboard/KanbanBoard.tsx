@@ -13,6 +13,23 @@ export default function KanbanBoard() {
     const listsContainer = document.querySelector(
       "#lists-container"
     ) as Element;
+
+    //horizontal scrolling
+    window.addEventListener("wheel", function (e) {
+      const isInsideContainer =
+        e.target === listsContainer ||
+        listsContainer.contains(e.target as Node);
+
+      if (isInsideContainer) {
+        if (e.deltaY > 0) {
+          listsContainer.scrollLeft += 20;
+        } else {
+          listsContainer.scrollLeft -= 20;
+        }
+      }
+    });
+
+    //automatic scrolling when new list is added
     const listsLength = Number(listsContainer.children.length);
     if (listsLength === 0) {
       return;
@@ -31,7 +48,7 @@ export default function KanbanBoard() {
   return (
     <div className={styles["kanban-board"]}>
       <h1 className={styles["main-heading"]}>Kanban</h1>
-      <div className={styles["row"]}>
+      <div className={styles.row}>
         <div id="lists-container" className={styles["lists-container"]}>
           {lists.map((list) => (
             <KanbanList
