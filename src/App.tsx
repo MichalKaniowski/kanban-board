@@ -1,4 +1,4 @@
-import { useEffect, useState, useContext } from "react";
+import { useEffect, useState } from "react";
 import styles from "./App.module.css";
 import SideMenu from "./components/sidemenu/SideMenu";
 import KanbanBoard from "./components/kanbanboard/KanbanBoard";

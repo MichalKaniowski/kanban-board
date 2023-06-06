@@ -15,10 +15,10 @@ type Context = {
 
 export const KanbanContext = React.createContext<Context>({
   lists: [],
-  onListAdd: (list: List) => {},
-  onItemAdd: (listId: string, item: ListItem) => {},
-  onItemEdit: (listId: string, item: ListItem) => {},
-  onListRemove: (listId: string) => {},
+  onListAdd: () => {},
+  onItemAdd: () => {},
+  onItemEdit: () => {},
+  onListRemove: () => {},
 });
 
 const initialLists = [

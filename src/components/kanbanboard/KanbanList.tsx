@@ -21,13 +21,6 @@ export default function KanbanList({ id, name, items }: List) {
 
   const kanbanContext = useContext(KanbanContext);
 
-  const [animation, setAnimation] = useState(false);
-  useEffect(() => {
-    setTimeout(() => {
-      setAnimation(true);
-    }, 1000);
-  }, []);
-
   useEffect(() => {
     inputRef.current.value = name;
   }, []);
@@ -59,9 +52,7 @@ export default function KanbanList({ id, name, items }: List) {
   }
 
   function deleteListHandler() {
-    setTimeout(() => {
-      kanbanContext.onListRemove(id);
-    }, 500);
+    kanbanContext.onListRemove(id);
   }
 
   function itemErrorHandler(message: string) {
@@ -76,11 +67,7 @@ export default function KanbanList({ id, name, items }: List) {
   const rootOverlay = document.querySelector("#root-overlay") as Element;
 
   return (
-    <div
-      className={`${styles.container} ${
-        !animation ? styles.animation : styles["animation-end"]
-      }`}
-    >
+    <div className={styles.container}>
       {isModalDisplayed &&
         !editingItem &&
         !error &&

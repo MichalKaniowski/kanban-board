@@ -1,5 +1,4 @@
 import { nanoid } from "nanoid";
-import { useState } from "react";
 import styles from "./SideMenu.module.css";
 import MenuItem from "./MenuItem";
 import {
@@ -15,19 +14,12 @@ const menuItems = [
 ];
 
 export default function SideMenu() {
-  const [activeItem, setActiveItem] = useState("Kanban");
-
   return (
     <div className={styles["side-menu"]}>
       <h2 className={styles.brand}>Productivio</h2>
       <ul className={styles["menu-list"]}>
         {menuItems.map((item) => (
-          <MenuItem
-            key={nanoid()}
-            name={item.name}
-            icon={item.icon}
-            classes={activeItem === item.name ? "active" : ""}
-          />
+          <MenuItem key={nanoid()} name={item.name} icon={item.icon} />
         ))}
       </ul>
     </div>
