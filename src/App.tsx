@@ -6,13 +6,29 @@ import { KanbanContextProvider } from "./store/KanbanContext";
 
 function App() {
   const [themeIsDark, setThemeIsDark] = useState(false);
+  const [firstRun, setFirstRun] = useState(true);
 
   useEffect(() => {
+    if (
+      firstRun &&
+      window.matchMedia &&
+      window.matchMedia("(prefers-color-scheme: dark)").matches
+    ) {
+      setThemeIsDark(true);
+      setFirstRun(false);
+      return;
+    }
+
+    //for modals to have access to global variables
     const overlayContainer = document.querySelector("#root-overlay");
     if (overlayContainer) {
       overlayContainer.className = themeIsDark ? "dark-theme" : "light-theme";
     }
   }, [themeIsDark]);
+
+  function themeChangeHandler(themeIsDark: boolean) {
+    setThemeIsDark(themeIsDark);
+  }
 
   return (
     <div
@@ -23,14 +39,11 @@ function App() {
       <main className={styles.main}>
         <SideMenu />
         <KanbanContextProvider>
-          <KanbanBoard />
+          <KanbanBoard
+            onThemeChange={themeChangeHandler}
+            themeIsDark={themeIsDark}
+          />
         </KanbanContextProvider>
-        <button
-          onClick={() => setThemeIsDark((prevValue) => !prevValue)}
-          style={{ position: "absolute", top: "30px", right: "150px" }}
-        >
-          theme change
-        </button>
       </main>
     </div>
   );

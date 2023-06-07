@@ -1,11 +1,18 @@
 import { nanoid } from "nanoid";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faMoon, faSun } from "@fortawesome/free-solid-svg-icons";
 import { useContext, useEffect } from "react";
 import styles from "./KanbanBoard.module.css";
 import KanbanList from "./KanbanList";
 import NewKanbanList from "./NewKanbanList";
 import { KanbanContext } from "../../store/KanbanContext";
 
-export default function KanbanBoard() {
+type Props = {
+  onThemeChange: (themeIsDark: boolean) => void;
+  themeIsDark: boolean;
+};
+
+export default function KanbanBoard({ onThemeChange, themeIsDark }: Props) {
   const kanbanContext = useContext(KanbanContext);
   const kanbanListsLength = kanbanContext.lists.length;
 
@@ -30,7 +37,7 @@ export default function KanbanBoard() {
     });
 
     //automatic scrolling when new list is added
-    const listsLength = Number(listsContainer.children.length);
+    const listsLength = listsContainer.children.length;
     if (listsLength === 0) {
       return;
     }
@@ -45,9 +52,40 @@ export default function KanbanBoard() {
     kanbanContext.onListAdd({ id: nanoid(), name: newList, items: [] });
   }
 
+  function themeChangeHandler(theme: string) {
+    if (theme === "light") {
+      onThemeChange(false);
+    } else {
+      onThemeChange(true);
+    }
+  }
+
   return (
     <div className={styles["kanban-board"]}>
-      <h1 className={styles["main-heading"]}>Kanban</h1>
+      <div className={styles["top-container"]}>
+        <h1 className={styles["main-heading"]}>Kanban</h1>
+        <input placeholder="Search for task" />
+        <button
+          className={`${styles["theme-button"]} ${
+            themeIsDark ? styles["dark-theme"] : styles["light-theme"]
+          }`}
+        >
+          <FontAwesomeIcon
+            onClick={() => themeChangeHandler("light")}
+            className={styles.sun}
+            icon={faSun}
+            size="lg"
+          />
+
+          <FontAwesomeIcon
+            onClick={() => themeChangeHandler("dark")}
+            className={styles.moon}
+            icon={faMoon}
+            size="lg"
+          />
+          <div className={styles.ball}></div>
+        </button>
+      </div>
       <div className={styles.row}>
         <div id="lists-container" className={styles["lists-container"]}>
           {lists.map((list) => (
