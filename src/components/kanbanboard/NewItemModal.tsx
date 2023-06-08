@@ -4,6 +4,7 @@ import ReactDOM from "react-dom";
 import { useState, useRef, useEffect } from "react";
 import { ListItem } from "./KanbanBoard.types";
 import Backdrop from "../ui/Backdrop";
+import { changeCategoryIntoObject } from "../../utils/utils";
 
 type AddItem = {
   onItemAdd: ({ id, name, description, category }: ListItem) => void;
@@ -20,7 +21,7 @@ type EditItem = {
 
 type Props = AddItem | EditItem;
 
-const categories = ["Feature", "Refactor", "Bug", "Other"];
+const categories = ["feature", "refactor", "bug", "other"];
 
 export default function NewItemModal(props: Props) {
   const [activeCategory, setActiveCategory] = useState<string>("");
@@ -34,7 +35,7 @@ export default function NewItemModal(props: Props) {
     if (isEditing) {
       inputRef.current.value = editingItem.name;
       textAreaRef.current.value = editingItem.description;
-      setActiveCategory(editingItem.category.toLowerCase());
+      setActiveCategory(editingItem.category.name);
     }
   }, [isEditing]);
 
@@ -59,7 +60,9 @@ export default function NewItemModal(props: Props) {
       id: nanoid(),
       name: title,
       description: description,
-      category: activeCategory || "other",
+      category:
+        changeCategoryIntoObject(activeCategory, "yellow") ||
+        changeCategoryIntoObject("other", "yellow"),
     });
   }
 
@@ -79,7 +82,7 @@ export default function NewItemModal(props: Props) {
       id: editingItem.id,
       name: title,
       description: description,
-      category: activeCategory,
+      category: changeCategoryIntoObject(activeCategory, "yellow"),
     });
   }
 
@@ -123,10 +126,8 @@ export default function NewItemModal(props: Props) {
           <li
             key={nanoid()}
             data-category={category}
-            className={`${styles[category.toLowerCase()]} ${
-              activeCategory.toLowerCase() === category.toLowerCase()
-                ? `${styles["active-category"]}`
-                : ""
+            className={`${styles[category]} ${
+              activeCategory === category ? `${styles["active-category"]}` : ""
             }`}
           >
             {category}

@@ -19,10 +19,9 @@ function App() {
       return;
     }
 
-    //for modals to have access to global variables
-    const overlayContainer = document.querySelector("#root-overlay");
-    if (overlayContainer) {
-      overlayContainer.className = themeIsDark ? "dark-theme" : "light-theme";
+    const body = document.querySelector("body");
+    if (body) {
+      body.className = themeIsDark ? "dark-theme" : "light-theme";
     }
   }, [themeIsDark]);
 
@@ -31,11 +30,7 @@ function App() {
   }
 
   return (
-    <div
-      className={`${styles["body"]} ${
-        themeIsDark ? "dark-theme" : "light-theme"
-      }`}
-    >
+    <div className={styles.body}>
       <main className={styles.main}>
         <SideMenu />
         <KanbanContextProvider>

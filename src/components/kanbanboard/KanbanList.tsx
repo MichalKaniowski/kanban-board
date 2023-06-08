@@ -3,7 +3,7 @@ import { useState, useRef, useEffect, useContext } from "react";
 import styles from "./Kanbanlist.module.css";
 import NewItemModal from "./NewItemModal";
 import { KanbanContext } from "../../store/KanbanContext";
-import { List, ListItem } from "./KanbanBoard.types";
+import { ListItem } from "./KanbanBoard.types";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faTrashCan,
@@ -11,18 +11,50 @@ import {
   faPencil,
 } from "@fortawesome/free-solid-svg-icons";
 import Modal from "../ui/Modal";
+import { ModifiedCategory } from "./KanbanBoard.types";
 
-export default function KanbanList({ id, name, items }: List) {
-  const inputRef = useRef<HTMLInputElement>(null!);
+type Props = {
+  id: string;
+  name: string;
+  items: ListItem[];
+  categories: ModifiedCategory[];
+  inputValue: string;
+};
+
+export default function KanbanList({
+  id,
+  name,
+  items,
+  categories,
+  inputValue,
+}: Props) {
+  const [filteredItems, setFilteredItems] = useState(items);
   const [isModalDisplayed, setIsModalDisplayed] = useState(false);
   const [editingItem, setEditingItem] = useState<ListItem | null>(null);
   const [error, setError] = useState("");
 
+  const inputRef = useRef<HTMLInputElement>(null!);
   const kanbanContext = useContext(KanbanContext);
 
   useEffect(() => {
     inputRef.current.value = name;
   }, []);
+
+  useEffect(() => {
+    const activeCategories = categories
+      .filter((category) => category.active)
+      .map((category) => category.name);
+
+    const itemsFilteredByCategorie = items.filter((item) =>
+      activeCategories.includes(item.category.name)
+    );
+
+    const itemsFilteredByInputValue = itemsFilteredByCategorie.filter((item) =>
+      item.name.toLowerCase().includes(inputValue.trim().toLowerCase())
+    );
+
+    setFilteredItems(itemsFilteredByInputValue);
+  }, [items, categories, inputValue]);
 
   function nameChangeHandler(e: React.FormEvent) {
     e.preventDefault();
@@ -103,16 +135,14 @@ export default function KanbanList({ id, name, items }: List) {
       </button>
 
       <ul>
-        {items.map((item) => {
+        {filteredItems.map((item) => {
           return (
             <li key={nanoid()}>
               <p>{item.name}</p>
               <span
-                className={`${styles[item.category.toLowerCase()]} ${
-                  styles.category
-                }`}
+                className={`${styles[item.category.name]} ${styles.category}`}
               >
-                {item.category}
+                {item.category.name}
               </span>
               <button
                 onClick={() => buttonClickHandler(item)}
