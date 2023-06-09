@@ -7,6 +7,20 @@ import { KanbanContextProvider } from "./store/KanbanContext";
 function App() {
   const [themeIsDark, setThemeIsDark] = useState(false);
   const [firstRun, setFirstRun] = useState(true);
+  const [isScreenSmall, setIsScreenSmall] = useState(window.innerWidth < 800);
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+
+  function resize() {
+    setIsScreenSmall(window.innerWidth < 800);
+  }
+
+  useEffect(() => {
+    window.addEventListener("resize", () => {
+      resize();
+    });
+
+    return () => removeEventListener("resize", resize);
+  }, []);
 
   useEffect(() => {
     if (
@@ -29,15 +43,31 @@ function App() {
     setThemeIsDark(themeIsDark);
   }
 
+  function toggleMenuHandler() {
+    setIsMenuOpen((prevValue) => !prevValue);
+  }
+
   return (
     <div className={styles.body}>
-      <main className={styles.main}>
-        <SideMenu />
+      <main
+        className={`${styles.main} ${isMenuOpen ? styles["menu-open"] : ""}`}
+      >
+        <SideMenu
+          isScreenSmall={isScreenSmall}
+          isMenuOpen={isMenuOpen}
+          onMenuToggle={toggleMenuHandler}
+        />
+
         <KanbanContextProvider>
-          <KanbanBoard
-            onThemeChange={themeChangeHandler}
-            themeIsDark={themeIsDark}
-          />
+          {!isMenuOpen && (
+            <KanbanBoard
+              onThemeChange={themeChangeHandler}
+              themeIsDark={themeIsDark}
+              isScreenSmall={isScreenSmall}
+              isMenuOpen={isMenuOpen}
+              onMenuToggle={toggleMenuHandler}
+            />
+          )}
         </KanbanContextProvider>
       </main>
     </div>

@@ -60,9 +60,9 @@ export default function NewItemModal(props: Props) {
       id: nanoid(),
       name: title,
       description: description,
-      category:
-        changeCategoryIntoObject(activeCategory, "yellow") ||
-        changeCategoryIntoObject("other", "yellow"),
+      category: activeCategory
+        ? changeCategoryIntoObject(activeCategory, "yellow")
+        : changeCategoryIntoObject("other", "yellow"),
     });
   }
 

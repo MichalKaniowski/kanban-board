@@ -5,6 +5,15 @@
   padding: 10px;
 }
 
+.side-menu.closed {
+  width: 0px;
+  padding: 0;
+}
+
+.side-menu.full-screen {
+  width: 100%;
+}
+
 .brand {
   margin-bottom: 25px;
   color: var(--clr-text);
@@ -12,4 +21,18 @@
 
 .menu-list {
   list-style: none;
+  position: relative;
+}
+
+.menu-icon {
+  position: absolute;
+  top: 25px;
+  color: var(--clr-text);
+}
+
+@media screen and (max-width: 800px) {
+  .brand {
+    margin-top: 25px;
+    margin-bottom: 15px;
+  }
 }

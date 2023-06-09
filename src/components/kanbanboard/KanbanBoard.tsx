@@ -1,6 +1,6 @@
 import { nanoid } from "nanoid";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faMoon, faSun } from "@fortawesome/free-solid-svg-icons";
+import { faMoon, faSun, faBars } from "@fortawesome/free-solid-svg-icons";
 import { useContext, useEffect, useState } from "react";
 import styles from "./KanbanBoard.module.css";
 import KanbanList from "./KanbanList";
@@ -10,9 +10,18 @@ import { KanbanContext } from "../../store/KanbanContext";
 type Props = {
   onThemeChange: (themeIsDark: boolean) => void;
   themeIsDark: boolean;
+  isScreenSmall: boolean;
+  isMenuOpen: boolean;
+  onMenuToggle: () => void;
 };
 
-export default function KanbanBoard({ onThemeChange, themeIsDark }: Props) {
+export default function KanbanBoard({
+  onThemeChange,
+  themeIsDark,
+  isScreenSmall,
+  isMenuOpen,
+  onMenuToggle,
+}: Props) {
   const kanbanContext = useContext(KanbanContext);
   const initialCategories = kanbanContext.categories.map((category) => ({
     ...category,
@@ -79,6 +88,10 @@ export default function KanbanBoard({ onThemeChange, themeIsDark }: Props) {
     );
   }
 
+  function toggleMenuHandler() {
+    onMenuToggle();
+  }
+
   const categorieElements = categories.map((category) => {
     return (
       <div
@@ -95,12 +108,21 @@ export default function KanbanBoard({ onThemeChange, themeIsDark }: Props) {
   return (
     <div className={styles["kanban-board"]}>
       <div className={styles["top-container"]}>
+        {!isMenuOpen && isScreenSmall && (
+          <FontAwesomeIcon
+            icon={faBars}
+            onClick={toggleMenuHandler}
+            className={styles["menu-icon"]}
+          />
+        )}
         <h1 className={styles["main-heading"]}>Kanban</h1>
-        <input
-          onChange={(e) => setInputValue(e.target.value)}
-          value={inputValue}
-          placeholder="Search for task"
-        />
+        {!isScreenSmall && (
+          <input
+            onChange={(e) => setInputValue(e.target.value)}
+            value={inputValue}
+            placeholder="Search for task"
+          />
+        )}
         <button
           className={`${styles["theme-button"]} ${
             themeIsDark ? styles["dark-theme"] : styles["light-theme"]
@@ -123,6 +145,15 @@ export default function KanbanBoard({ onThemeChange, themeIsDark }: Props) {
         </button>
       </div>
 
+      {isScreenSmall && (
+        <input
+          className={styles["small-screen-input"]}
+          value={inputValue}
+          onChange={(e) => setInputValue(e.target.value)}
+          placeholder="Search for task"
+        />
+      )}
+
       <div className={styles.categories}>{categorieElements}</div>
 
       <div className={styles.row}>
@@ -137,8 +168,9 @@ export default function KanbanBoard({ onThemeChange, themeIsDark }: Props) {
               inputValue={inputValue}
             />
           ))}
+          {isScreenSmall && <NewKanbanList onAdd={addListHandler} />}
         </div>
-        <NewKanbanList onAdd={addListHandler} />
+        {!isScreenSmall && <NewKanbanList onAdd={addListHandler} />}
       </div>
     </div>
   );

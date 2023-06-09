@@ -1,7 +1,9 @@
 .new-list-button {
   width: 250px;
+  min-width: 220px;
+  height: 100%;
   min-height: 150px;
-  max-height: 300px;
+  max-height: 200px;
   border-style: dashed;
   border-color: var(--clr-text);
   cursor: pointer;
@@ -16,4 +18,10 @@
   border-style: groove;
   transition: all 0.2s ease-in;
   background-color: var(--clr-kanban-list-bg);
+}
+
+@media screen and (max-width: 1000px) {
+  .new-list-button {
+    width: 170px;
+  }
 }

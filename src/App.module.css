@@ -9,3 +9,19 @@
   grid-template-columns: 1fr 4fr;
   box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
 }
+
+.main.menu-open {
+  grid-template-columns: 3fr 1fr;
+}
+
+@media screen and (max-width: 1000px) {
+  .body {
+    padding: 15px 20px;
+  }
+}
+
+@media screen and (max-width: 800px) {
+  .main {
+    display: flex;
+  }
+}
