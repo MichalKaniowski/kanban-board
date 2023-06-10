@@ -1,11 +1,17 @@
 .modal {
   background-color: rgb(83, 83, 83);
-  min-width: 400px;
-  min-height: 300px;
+  width: 400px;
+  /* min-width: 300px;
+  max-width: 500px; */
+  /* min-height: 300px; */
   padding: 10px 20px;
-  border-radius: 10px;
+  border-radius: var(--br-modal);
   color: #fff;
 }
+
+/* .modal.small-screen {
+  width: 300px;
+} */
 
 .modal h3 {
   color: inherit;
@@ -24,8 +30,13 @@
   min-width: 180px;
 }
 
+.modal textarea {
+  width: 95%;
+}
+
 .categories {
   display: flex;
+  flex-wrap: wrap;
   gap: 10px;
   margin-bottom: 60px;
 }
@@ -36,20 +47,9 @@
   cursor: pointer;
 }
 
-.active-category.feature {
-  background-color: green;
-}
-
-.active-category.refactor {
-  background-color: rgb(106, 106, 255);
-}
-
-.active-category.bug {
-  background-color: purple;
-}
-
-.active-category.other {
-  background-color: rgb(155, 155, 0);
+.not-active-category {
+  background-color: inherit !important;
+  color: #fff;
 }
 
 .task-category-heading {
@@ -61,7 +61,7 @@
   right: 15px;
   bottom: 15px;
   padding: 7px 20px;
-  border-radius: 3px;
+  border-radius: var(--br-button);
   border: none;
   cursor: pointer;
   font-size: 0.95rem;

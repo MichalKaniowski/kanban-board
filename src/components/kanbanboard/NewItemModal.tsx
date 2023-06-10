@@ -1,10 +1,14 @@
 import { nanoid } from "nanoid";
 import styles from "./NewItemModal.module.css";
 import ReactDOM from "react-dom";
-import { useState, useRef, useEffect } from "react";
-import { ListItem } from "./KanbanBoard.types";
+import { useState, useRef, useEffect, useContext } from "react";
+import { Category, ListItem } from "./KanbanBoard.types";
 import Backdrop from "../ui/Backdrop";
 import { changeCategoryIntoObject } from "../../utils/utils";
+import { KanbanContext } from "../../store/KanbanContext";
+import { ScreenContext } from "../../store/ScreenContext";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faX } from "@fortawesome/free-solid-svg-icons";
 
 type AddItem = {
   onItemAdd: ({ id, name, description, category }: ListItem) => void;
@@ -21,12 +25,14 @@ type EditItem = {
 
 type Props = AddItem | EditItem;
 
-const categories = ["feature", "refactor", "bug", "other"];
-
 export default function NewItemModal(props: Props) {
   const [activeCategory, setActiveCategory] = useState<string>("");
   const inputRef = useRef<HTMLInputElement>(null!);
   const textAreaRef = useRef<HTMLTextAreaElement>(null!);
+  const kanbanContext = useContext(KanbanContext);
+  const screenContext = useContext(ScreenContext);
+
+  const categories = kanbanContext.categories;
 
   const editingItem = (props as EditItem).editingItem;
   const isEditing = editingItem !== undefined;
@@ -39,11 +45,12 @@ export default function NewItemModal(props: Props) {
     }
   }, [isEditing]);
 
-  function categoryChangeHandler(e: React.MouseEvent<HTMLUListElement>) {
-    const element = e.target as HTMLUListElement;
-    const elementCategory = element.dataset.category as string;
+  function categoryChangeHandler(categoryId: string) {
+    const category = categories.find(
+      (category) => category.id === categoryId
+    ) as Category;
 
-    setActiveCategory(elementCategory);
+    setActiveCategory(category.name);
   }
 
   function addItemHandler() {
@@ -56,19 +63,27 @@ export default function NewItemModal(props: Props) {
       return;
     }
 
+    const category = categories.find(
+      (category) => category.name === activeCategory
+    ) as Category;
+
     (props as AddItem).onItemAdd({
       id: nanoid(),
       name: title,
       description: description,
       category: activeCategory
-        ? changeCategoryIntoObject(activeCategory, "yellow")
-        : changeCategoryIntoObject("other", "yellow"),
+        ? changeCategoryIntoObject(activeCategory, category.backgroundColor)
+        : changeCategoryIntoObject("other", "rgb(155, 155, 0)"),
     });
   }
 
   function editItemHandler() {
     const title = inputRef.current.value;
     const description = textAreaRef.current.value;
+
+    const category = categories.find(
+      (category) => category.name === activeCategory
+    ) as Category;
 
     if (title.trim() === "") {
       props.onItemError(
@@ -82,7 +97,10 @@ export default function NewItemModal(props: Props) {
       id: editingItem.id,
       name: title,
       description: description,
-      category: changeCategoryIntoObject(activeCategory, "yellow"),
+      category: changeCategoryIntoObject(
+        activeCategory,
+        category.backgroundColor
+      ),
     });
   }
 
@@ -98,10 +116,14 @@ export default function NewItemModal(props: Props) {
   const modalHeading = isEditing ? "Edit Task" : "Create new task";
 
   const newItemModal = (
-    <div className={`modal ${styles.modal}`}>
+    <div
+      className={`modal ${styles.modal} ${
+        screenContext.isScreenSmall ? styles["small-screen"] : ""
+      }`}
+    >
       <h3 className="modal-heading">{modalHeading}</h3>
       <button className={styles["close-modal-button"]} onClick={props.onClose}>
-        X
+        <FontAwesomeIcon icon={faX} size="sm" />
       </button>
       <form onSubmit={formSubmitHandler}>
         <label htmlFor="title-input">Title</label>
@@ -113,7 +135,6 @@ export default function NewItemModal(props: Props) {
           ref={textAreaRef}
           placeholder="Task description"
           rows={5}
-          cols={35}
         />
         <button type="submit" className={styles["add-task-button"]}>
           Save
@@ -121,16 +142,19 @@ export default function NewItemModal(props: Props) {
       </form>
 
       <p className={styles["task-category-heading"]}>Task category</p>
-      <ul className={styles.categories} onClick={categoryChangeHandler}>
+      <ul className={styles.categories}>
         {categories.map((category) => (
           <li
             key={nanoid()}
-            data-category={category}
-            className={`${styles[category]} ${
-              activeCategory === category ? `${styles["active-category"]}` : ""
+            onClick={() => categoryChangeHandler(category.id)}
+            style={{ backgroundColor: category.backgroundColor }}
+            className={`${
+              activeCategory === category.name
+                ? ""
+                : `${styles["not-active-category"]}`
             }`}
           >
-            {category}
+            {category.name}
           </li>
         ))}
       </ul>

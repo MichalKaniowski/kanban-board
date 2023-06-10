@@ -11,8 +11,6 @@
 }
 
 .menu-icon {
-  /* position: absolute;
-  top: 20px; */
   width: 14px;
   color: var(--clr-text);
 }
@@ -118,14 +116,30 @@
 
 .category {
   padding: 4px 8px;
-  border-radius: 5px;
+  border-radius: var(--br-button);
   color: #fff;
   cursor: pointer;
   opacity: 0.5;
+  font-size: 0.95rem;
 }
 
 .category.active {
   opacity: 1;
+}
+
+.new-category-button {
+  color: var(--clr-text);
+  background-color: inherit;
+  border: 2px solid#56667a;
+  border-radius: var(--br-button);
+  padding: 4px 8px;
+  cursor: pointer;
+  font-size: 0.95rem;
+}
+
+.new-category-button:hover {
+  color: #fff;
+  background-color: #56667a;
 }
 
 .row {

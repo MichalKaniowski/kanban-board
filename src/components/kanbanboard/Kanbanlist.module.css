@@ -59,7 +59,7 @@
   display: inline-block;
   color: #fff;
   padding: 2px 5px;
-  border-radius: 5px;
+  border-radius: var(--br-button);
   font-size: 0.9rem;
   font-weight: 500;
 }

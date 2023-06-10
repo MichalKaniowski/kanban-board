@@ -1,14 +1,22 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useContext } from "react";
 import styles from "./App.module.css";
 import SideMenu from "./components/sidemenu/SideMenu";
 import KanbanBoard from "./components/kanbanboard/KanbanBoard";
 import { KanbanContextProvider } from "./store/KanbanContext";
+import { ScreenContextProvider } from "./store/ScreenContext";
+import { ScreenContext } from "./store/ScreenContext";
 
 function App() {
   const [themeIsDark, setThemeIsDark] = useState(false);
   const [firstRun, setFirstRun] = useState(true);
   const [isScreenSmall, setIsScreenSmall] = useState(window.innerWidth < 800);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const screenContext = useContext(ScreenContext);
+
+  useEffect(() => {
+    console.log(isScreenSmall);
+    screenContext.onScreenSizeChange(isScreenSmall);
+  }, [isScreenSmall]);
 
   function resize() {
     setIsScreenSmall(window.innerWidth < 800);
@@ -52,23 +60,25 @@ function App() {
       <main
         className={`${styles.main} ${isMenuOpen ? styles["menu-open"] : ""}`}
       >
-        <SideMenu
-          isScreenSmall={isScreenSmall}
-          isMenuOpen={isMenuOpen}
-          onMenuToggle={toggleMenuHandler}
-        />
+        <ScreenContextProvider>
+          <SideMenu
+            isScreenSmall={isScreenSmall}
+            isMenuOpen={isMenuOpen}
+            onMenuToggle={toggleMenuHandler}
+          />
 
-        <KanbanContextProvider>
-          {!isMenuOpen && (
-            <KanbanBoard
-              onThemeChange={themeChangeHandler}
-              themeIsDark={themeIsDark}
-              isScreenSmall={isScreenSmall}
-              isMenuOpen={isMenuOpen}
-              onMenuToggle={toggleMenuHandler}
-            />
-          )}
-        </KanbanContextProvider>
+          <KanbanContextProvider>
+            {!isMenuOpen && (
+              <KanbanBoard
+                onThemeChange={themeChangeHandler}
+                themeIsDark={themeIsDark}
+                isScreenSmall={isScreenSmall}
+                isMenuOpen={isMenuOpen}
+                onMenuToggle={toggleMenuHandler}
+              />
+            )}
+          </KanbanContextProvider>
+        </ScreenContextProvider>
       </main>
     </div>
   );

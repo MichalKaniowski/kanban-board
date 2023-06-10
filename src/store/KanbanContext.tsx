@@ -3,6 +3,7 @@ import {
   List,
   ListItem,
   Category,
+  ModifiedCategory,
 } from "../components/kanbanboard/KanbanBoard.types";
 import { changeCategoryIntoObject } from "../utils/utils";
 
@@ -17,6 +18,7 @@ type Context = {
   onItemAdd: (listId: string, item: ListItem) => void;
   onItemEdit: (listId: string, item: ListItem) => void;
   onListRemove: (listId: string) => void;
+  onCategoryAdd: (category: ModifiedCategory) => void;
 };
 
 export const KanbanContext = React.createContext<Context>({
@@ -26,6 +28,7 @@ export const KanbanContext = React.createContext<Context>({
   onItemAdd: () => {},
   onItemEdit: () => {},
   onListRemove: () => {},
+  onCategoryAdd: () => {},
 });
 
 const initialLists: List[] = [
@@ -67,7 +70,7 @@ const initialLists: List[] = [
 
 export function KanbanContextProvider(props: Props) {
   const [lists, setLists] = useState(initialLists);
-  const [categories] = useState([
+  const [categories, setCategories] = useState([
     { id: "bJTAesd5EJNhNoE6_vpwE", name: "feature", backgroundColor: "green" },
     {
       id: "jY6JvfkfjfwQUnio3gpYj",
@@ -90,7 +93,6 @@ export function KanbanContextProvider(props: Props) {
     setLists((prevLists) =>
       prevLists.map((list) => {
         if (list.id === listId) {
-          console.log(list.items);
           const newListItems = [...list.items, item];
           return { ...list, items: newListItems };
         } else {
@@ -139,6 +141,10 @@ export function KanbanContextProvider(props: Props) {
     setLists((prevLists) => prevLists.filter((list) => list.id !== listId));
   }
 
+  function addCategory(category: ModifiedCategory) {
+    setCategories((prevCategories) => [...prevCategories, category]);
+  }
+
   const value = {
     lists: lists,
     categories: categories,
@@ -146,6 +152,7 @@ export function KanbanContextProvider(props: Props) {
     onItemAdd: addItem,
     onItemEdit: editItem,
     onListRemove: removeList,
+    onCategoryAdd: addCategory,
   };
 
   return (

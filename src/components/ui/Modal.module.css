@@ -2,9 +2,11 @@
   background-color: rgb(83, 83, 83);
   min-width: 300px;
   min-height: 250px;
+  max-width: 500px;
   padding: 15px 25px;
-  border-radius: 10px;
+  border-radius: var(--br-modal);
   color: #fff;
+  position: relative;
 }
 
 .modal h3 {
@@ -20,7 +22,7 @@
   color: rgb(202, 202, 0);
 }
 .modal.info h3 {
-  color: rgb(37, 37, 255);
+  color: #1a8fe3;
 }
 
 .modal-message {

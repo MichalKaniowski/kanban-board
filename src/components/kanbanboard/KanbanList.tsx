@@ -140,7 +140,8 @@ export default function KanbanList({
             <li key={nanoid()}>
               <p>{item.name}</p>
               <span
-                className={`${styles[item.category.name]} ${styles.category}`}
+                style={{ backgroundColor: item.category.backgroundColor }}
+                className={`${styles.category}`}
               >
                 {item.category.name}
               </span>

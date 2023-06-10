@@ -1,5 +1,7 @@
 import styles from "./Modal.module.css";
 import ReactDOM from "react-dom";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faX } from "@fortawesome/free-solid-svg-icons";
 import { capitalize } from "../../utils/utils";
 import Backdrop from "./Backdrop";
 
@@ -29,7 +31,7 @@ export default function Modal({ type, message, onClose }: Props) {
         <h3>{capitalize(type)}</h3>
         <p className={styles["modal-message"]}>{message}</p>
         <button className={styles["close-modal-button"]} onClick={onClose}>
-          X
+          <FontAwesomeIcon icon={faX} size="sm" />
         </button>
       </div>
     </>

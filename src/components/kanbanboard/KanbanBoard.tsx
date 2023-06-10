@@ -5,6 +5,7 @@ import { useContext, useEffect, useState } from "react";
 import styles from "./KanbanBoard.module.css";
 import KanbanList from "./KanbanList";
 import NewKanbanList from "./NewKanbanList";
+import NewCategoryModal from "./NewCategoryModal";
 import { KanbanContext } from "../../store/KanbanContext";
 
 type Props = {
@@ -29,8 +30,19 @@ export default function KanbanBoard({
   }));
   const [categories, setCategories] = useState(initialCategories);
   const [inputValue, setInputValue] = useState("");
+  const [isCategoryModalOpen, setIsCategoryModalOpen] = useState(false);
 
   const kanbanListsLength = kanbanContext.lists.length;
+  const kanbanCategoriesLength = kanbanContext.categories.length;
+
+  useEffect(() => {
+    const categories = kanbanContext.categories.map((category) => ({
+      ...category,
+      active: true,
+    }));
+
+    setCategories(categories);
+  }, [kanbanCategoriesLength]);
 
   useEffect(() => {
     const listsContainer = document.querySelector(
@@ -107,6 +119,9 @@ export default function KanbanBoard({
 
   return (
     <div className={styles["kanban-board"]}>
+      {isCategoryModalOpen && (
+        <NewCategoryModal onClose={() => setIsCategoryModalOpen(false)} />
+      )}
       <div className={styles["top-container"]}>
         {!isMenuOpen && isScreenSmall && (
           <FontAwesomeIcon
@@ -154,7 +169,15 @@ export default function KanbanBoard({
         />
       )}
 
-      <div className={styles.categories}>{categorieElements}</div>
+      <div className={styles.categories}>
+        {categorieElements}
+        <button
+          className={styles["new-category-button"]}
+          onClick={() => setIsCategoryModalOpen(true)}
+        >
+          +
+        </button>
+      </div>
 
       <div className={styles.row}>
         <div id="lists-container" className={styles["lists-container"]}>
