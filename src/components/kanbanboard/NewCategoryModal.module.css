@@ -28,3 +28,13 @@
 .colorpicker {
   margin-bottom: 200px;
 }
+
+.close-modal-button {
+  position: absolute;
+  right: 15px;
+  top: 10px;
+  background-color: inherit;
+  border: none;
+  color: var(--clr-text);
+  cursor: pointer;
+}

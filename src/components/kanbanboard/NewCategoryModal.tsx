@@ -1,9 +1,11 @@
 import { nanoid } from "nanoid";
 import ReactDOM from "react-dom";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faX } from "@fortawesome/free-solid-svg-icons";
+import { CirclePicker } from "react-color";
 import { useState, useRef, useContext } from "react";
 import Backdrop from "../ui/Backdrop";
 import styles from "./NewCategoryModal.module.css";
-import { CirclePicker } from "react-color";
 import { KanbanContext } from "../../store/KanbanContext";
 import Modal from "../ui/Modal";
 
@@ -64,6 +66,9 @@ export default function NewCategoryModal({ onClose }: { onClose: () => void }) {
           className={styles["add-category-button"]}
         >
           Add
+        </button>
+        <button className={styles["close-modal-button"]} onClick={onClose}>
+          <FontAwesomeIcon icon={faX} size="sm" />
         </button>
       </div>
     </>

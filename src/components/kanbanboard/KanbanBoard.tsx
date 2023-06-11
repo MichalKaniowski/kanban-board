@@ -107,16 +107,12 @@ export default function KanbanBoard({
     }
   }
 
-  function categoryClickHandler(
-    e: React.MouseEvent<HTMLButtonElement> | React.MouseEvent<HTMLDivElement>,
-    categoryId: string
-  ) {
+  function categoryClickHandler(e: React.MouseEvent, categoryId: string) {
     const target = e.target as HTMLElement;
     const tagName = target.tagName.toLowerCase();
     if (tagName === "div") {
       toggleCategoryHandler(categoryId);
-    }
-    if (tagName === "button") {
+    } else {
       removeCategoryHandler(categoryId);
     }
   }
