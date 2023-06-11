@@ -19,6 +19,7 @@ type Context = {
   onListRemove: (listId: string) => void;
   onCategoryAdd: (category: ModifiedCategory) => void;
   onCategoryToggle: (categoryId: string) => void;
+  onCategoryRemove: (categoryId: string) => void;
 };
 
 export const KanbanContext = React.createContext<Context>({
@@ -30,6 +31,7 @@ export const KanbanContext = React.createContext<Context>({
   onListRemove: () => {},
   onCategoryAdd: () => {},
   onCategoryToggle: () => {},
+  onCategoryRemove: () => {},
 });
 
 const initialLists: List[] = [
@@ -157,23 +159,25 @@ export function KanbanContextProvider(props: Props) {
   }
 
   function addCategory(category: ModifiedCategory) {
-    setCategories((prevCategories) => {
-      console.log(prevCategories);
-      return [...prevCategories, category];
-    });
+    setCategories((prevCategories) => [...prevCategories, category]);
   }
 
   function toggleCategory(categoryId: string) {
-    setCategories((prevCategories) => {
-      console.log(prevCategories);
-      return prevCategories.map((category) => {
+    setCategories((prevCategories) =>
+      prevCategories.map((category) => {
         if (category.id === categoryId) {
           return { ...category, active: !category.active };
         } else {
           return category;
         }
-      });
-    });
+      })
+    );
+  }
+
+  function removeCategory(categoryId: string) {
+    setCategories((prevCategories) =>
+      prevCategories.filter((category) => category.id !== categoryId)
+    );
   }
 
   const value = {
@@ -185,6 +189,7 @@ export function KanbanContextProvider(props: Props) {
     onListRemove: removeList,
     onCategoryAdd: addCategory,
     onCategoryToggle: toggleCategory,
+    onCategoryRemove: removeCategory,
   };
 
   return (

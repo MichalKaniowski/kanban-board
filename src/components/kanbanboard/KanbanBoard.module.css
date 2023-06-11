@@ -116,6 +116,7 @@
 }
 
 .category {
+  position: relative;
   padding: 4px 8px;
   border-radius: var(--br-button);
   color: #fff;
@@ -126,6 +127,22 @@
 
 .category.active {
   opacity: 1;
+}
+
+.category-remove-button {
+  display: none;
+  position: absolute;
+  top: -8px;
+  right: -2px;
+  border: none;
+  background-color: transparent;
+  color: #fff;
+  font-size: 1.1rem;
+  cursor: pointer;
+}
+
+.category:hover .category-remove-button {
+  display: inline-block;
 }
 
 .new-category-button {

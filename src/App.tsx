@@ -14,7 +14,6 @@ function App() {
   const screenContext = useContext(ScreenContext);
 
   useEffect(() => {
-    console.log(isScreenSmall);
     screenContext.onScreenSizeChange(isScreenSmall);
   }, [isScreenSmall]);
 

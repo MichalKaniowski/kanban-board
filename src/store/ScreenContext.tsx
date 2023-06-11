@@ -17,8 +17,6 @@ export function ScreenContextProvider(props: { children: React.ReactNode }) {
     setIsScreenSmall(isScreenSmall);
   }
 
-  console.log("context: ", isScreenSmall);
-
   const value = {
     isScreenSmall: isScreenSmall,
     onScreenSizeChange: screenSizeChangeHandler,

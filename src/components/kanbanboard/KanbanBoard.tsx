@@ -1,12 +1,14 @@
 import { nanoid } from "nanoid";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faMoon, faSun, faBars } from "@fortawesome/free-solid-svg-icons";
+import { faMoon, faSun, faBars, faX } from "@fortawesome/free-solid-svg-icons";
 import { useContext, useEffect, useState } from "react";
 import styles from "./KanbanBoard.module.css";
 import KanbanList from "./KanbanList";
 import NewKanbanList from "./NewKanbanList";
 import NewCategoryModal from "./NewCategoryModal";
 import { KanbanContext } from "../../store/KanbanContext";
+import { ModifiedCategory } from "./KanbanBoard.types";
+import Modal from "../ui/Modal";
 
 type Props = {
   onThemeChange: (themeIsDark: boolean) => void;
@@ -27,6 +29,7 @@ export default function KanbanBoard({
   const [categories, setCategories] = useState(kanbanContext.categories);
   const [inputValue, setInputValue] = useState("");
   const [isCategoryModalOpen, setIsCategoryModalOpen] = useState(false);
+  const [error, setError] = useState("");
 
   const kanbanListsLength = kanbanContext.lists.length;
 
@@ -82,6 +85,42 @@ export default function KanbanBoard({
     kanbanContext.onCategoryToggle(categoryId);
   }
 
+  function removeCategoryHandler(categoryId: string) {
+    const category = kanbanContext.categories.find(
+      (category) => category.id === categoryId
+    ) as ModifiedCategory;
+    let error = false;
+    const lists = kanbanContext.lists;
+    lists.forEach((list) => {
+      list.items.forEach((item) => {
+        if (item.category.name === category.name) {
+          setError(
+            "You can't remove category which was assigned to task. Make sure to firstly remove that task."
+          );
+          error = true;
+        }
+      });
+    });
+
+    if (error === false) {
+      kanbanContext.onCategoryRemove(categoryId);
+    }
+  }
+
+  function categoryClickHandler(
+    e: React.MouseEvent<HTMLButtonElement> | React.MouseEvent<HTMLDivElement>,
+    categoryId: string
+  ) {
+    const target = e.target as HTMLElement;
+    const tagName = target.tagName.toLowerCase();
+    if (tagName === "div") {
+      toggleCategoryHandler(categoryId);
+    }
+    if (tagName === "button") {
+      removeCategoryHandler(categoryId);
+    }
+  }
+
   function toggleMenuHandler() {
     onMenuToggle();
   }
@@ -90,17 +129,26 @@ export default function KanbanBoard({
     return (
       <div
         key={nanoid()}
-        onClick={() => toggleCategoryHandler(category.id)}
+        onClick={(e) => categoryClickHandler(e, category.id)}
         className={`${styles.category} ${category.active ? styles.active : ""}`}
         style={{ backgroundColor: category.backgroundColor }}
       >
         {category.name}
+        <button
+          className={styles["category-remove-button"]}
+          onClick={(e) => categoryClickHandler(e, category.id)}
+        >
+          <FontAwesomeIcon icon={faX} size="2xs" />
+        </button>
       </div>
     );
   });
 
   return (
     <div className={styles["kanban-board"]}>
+      {error && (
+        <Modal type="error" message={error} onClose={() => setError("")} />
+      )}
       {isCategoryModalOpen && (
         <NewCategoryModal onClose={() => setIsCategoryModalOpen(false)} />
       )}
