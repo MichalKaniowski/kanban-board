@@ -68,22 +68,24 @@ const initialLists: List[] = [
   },
 ];
 
+const initialCategories: Category[] = [
+  { id: "bJTAesd5EJNhNoE6_vpwE", name: "feature", backgroundColor: "green" },
+  {
+    id: "jY6JvfkfjfwQUnio3gpYj",
+    name: "refactor",
+    backgroundColor: "rgb(106, 106, 255)",
+  },
+  { id: "QbUIbBD7lnKXXrYrEIS4J", name: "bug", backgroundColor: "purple" },
+  {
+    id: "86idew7Sduc6zM94NBIun",
+    name: "other",
+    backgroundColor: "rgb(155, 155, 0)",
+  },
+];
+
 export function KanbanContextProvider(props: Props) {
   const [lists, setLists] = useState(initialLists);
-  const [categories, setCategories] = useState([
-    { id: "bJTAesd5EJNhNoE6_vpwE", name: "feature", backgroundColor: "green" },
-    {
-      id: "jY6JvfkfjfwQUnio3gpYj",
-      name: "refactor",
-      backgroundColor: "rgb(106, 106, 255)",
-    },
-    { id: "QbUIbBD7lnKXXrYrEIS4J", name: "bug", backgroundColor: "purple" },
-    {
-      id: "86idew7Sduc6zM94NBIun",
-      name: "other",
-      backgroundColor: "rgb(155, 155, 0)",
-    },
-  ]);
+  const [categories, setCategories] = useState(initialCategories);
 
   function addList(list: List) {
     setLists((prevLists) => [...prevLists, list]);

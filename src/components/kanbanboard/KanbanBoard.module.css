@@ -89,6 +89,7 @@
   border-radius: 100%;
   background-color: red;
   position: absolute;
+  transition: all 200ms ease-in-out;
 }
 
 .light-theme .ball {
@@ -96,7 +97,7 @@
 }
 
 .dark-theme .ball {
-  right: 0;
+  transform: translateX(100%);
 }
 
 .small-screen-input {
