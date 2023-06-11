@@ -6,7 +6,6 @@
   padding: 15px 25px;
   border-radius: var(--br-modal);
   color: #fff;
-  position: relative;
 }
 
 .modal h3 {
