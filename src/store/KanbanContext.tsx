@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import {
   List,
   ListItem,
-  Category,
   ModifiedCategory,
 } from "../components/kanbanboard/KanbanBoard.types";
 import { changeCategoryIntoObject } from "../utils/utils";
@@ -13,12 +12,13 @@ type Props = {
 
 type Context = {
   lists: List[];
-  categories: Category[];
+  categories: ModifiedCategory[];
   onListAdd: (list: List) => void;
   onItemAdd: (listId: string, item: ListItem) => void;
   onItemEdit: (listId: string, item: ListItem) => void;
   onListRemove: (listId: string) => void;
   onCategoryAdd: (category: ModifiedCategory) => void;
+  onCategoryToggle: (categoryId: string) => void;
 };
 
 export const KanbanContext = React.createContext<Context>({
@@ -29,6 +29,7 @@ export const KanbanContext = React.createContext<Context>({
   onItemEdit: () => {},
   onListRemove: () => {},
   onCategoryAdd: () => {},
+  onCategoryToggle: () => {},
 });
 
 const initialLists: List[] = [
@@ -68,18 +69,30 @@ const initialLists: List[] = [
   },
 ];
 
-const initialCategories: Category[] = [
-  { id: "bJTAesd5EJNhNoE6_vpwE", name: "feature", backgroundColor: "green" },
+const initialCategories: ModifiedCategory[] = [
+  {
+    id: "bJTAesd5EJNhNoE6_vpwE",
+    name: "feature",
+    backgroundColor: "green",
+    active: true,
+  },
   {
     id: "jY6JvfkfjfwQUnio3gpYj",
     name: "refactor",
     backgroundColor: "rgb(106, 106, 255)",
+    active: true,
   },
-  { id: "QbUIbBD7lnKXXrYrEIS4J", name: "bug", backgroundColor: "purple" },
+  {
+    id: "QbUIbBD7lnKXXrYrEIS4J",
+    name: "bug",
+    backgroundColor: "purple",
+    active: true,
+  },
   {
     id: "86idew7Sduc6zM94NBIun",
     name: "other",
     backgroundColor: "rgb(155, 155, 0)",
+    active: true,
   },
 ];
 
@@ -144,7 +157,23 @@ export function KanbanContextProvider(props: Props) {
   }
 
   function addCategory(category: ModifiedCategory) {
-    setCategories((prevCategories) => [...prevCategories, category]);
+    setCategories((prevCategories) => {
+      console.log(prevCategories);
+      return [...prevCategories, category];
+    });
+  }
+
+  function toggleCategory(categoryId: string) {
+    setCategories((prevCategories) => {
+      console.log(prevCategories);
+      return prevCategories.map((category) => {
+        if (category.id === categoryId) {
+          return { ...category, active: !category.active };
+        } else {
+          return category;
+        }
+      });
+    });
   }
 
   const value = {
@@ -155,6 +184,7 @@ export function KanbanContextProvider(props: Props) {
     onItemEdit: editItem,
     onListRemove: removeList,
     onCategoryAdd: addCategory,
+    onCategoryToggle: toggleCategory,
   };
 
   return (

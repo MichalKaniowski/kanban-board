@@ -24,25 +24,15 @@ export default function KanbanBoard({
   onMenuToggle,
 }: Props) {
   const kanbanContext = useContext(KanbanContext);
-  const initialCategories = kanbanContext.categories.map((category) => ({
-    ...category,
-    active: true,
-  }));
-  const [categories, setCategories] = useState(initialCategories);
+  const [categories, setCategories] = useState(kanbanContext.categories);
   const [inputValue, setInputValue] = useState("");
   const [isCategoryModalOpen, setIsCategoryModalOpen] = useState(false);
 
   const kanbanListsLength = kanbanContext.lists.length;
-  const kanbanCategoriesLength = kanbanContext.categories.length;
 
   useEffect(() => {
-    const categories = kanbanContext.categories.map((category) => ({
-      ...category,
-      active: true,
-    }));
-
-    setCategories(categories);
-  }, [kanbanCategoriesLength]);
+    setCategories(kanbanContext.categories);
+  }, [kanbanContext.categories]);
 
   useEffect(() => {
     const listsContainer = document.querySelector(
@@ -89,15 +79,7 @@ export default function KanbanBoard({
   }
 
   function toggleCategoryHandler(categoryId: string) {
-    setCategories((prevCategories) =>
-      prevCategories.map((category) => {
-        if (category.id === categoryId) {
-          return { ...category, active: !category.active };
-        } else {
-          return category;
-        }
-      })
-    );
+    kanbanContext.onCategoryToggle(categoryId);
   }
 
   function toggleMenuHandler() {
