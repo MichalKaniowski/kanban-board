@@ -1,10 +1,14 @@
-import React, { useState } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import {
+  Category,
   List,
   ListItem,
   ModifiedCategory,
 } from "../components/kanbanboard/KanbanBoard.types";
 import { changeCategoryIntoObject } from "../utils/utils";
+// import { saveUserData, transformFirebaseObject } from "../utils/kanban-utils";
+import { auth } from "../components/auth/firebase";
+import { UserContext } from "./UserContext";
 
 type Props = {
   children: React.ReactNode;
@@ -20,6 +24,7 @@ type Context = {
   onCategoryAdd: (category: ModifiedCategory) => void;
   onCategoryToggle: (categoryId: string) => void;
   onCategoryRemove: (categoryId: string) => void;
+  onContextSet: (lists: List[], categories: ModifiedCategory[]) => void;
 };
 
 export const KanbanContext = React.createContext<Context>({
@@ -32,9 +37,10 @@ export const KanbanContext = React.createContext<Context>({
   onCategoryAdd: () => {},
   onCategoryToggle: () => {},
   onCategoryRemove: () => {},
+  onContextSet: () => {},
 });
 
-const initialLists: List[] = [
+export const initialLists: List[] = [
   {
     id: "hWAF2KkzrbpOSA8COYDEa",
     name: "Agenda",
@@ -71,7 +77,7 @@ const initialLists: List[] = [
   },
 ];
 
-const initialCategories: ModifiedCategory[] = [
+export const initialCategories: ModifiedCategory[] = [
   {
     id: "bJTAesd5EJNhNoE6_vpwE",
     name: "feature",
@@ -101,6 +107,16 @@ const initialCategories: ModifiedCategory[] = [
 export function KanbanContextProvider(props: Props) {
   const [lists, setLists] = useState(initialLists);
   const [categories, setCategories] = useState(initialCategories);
+
+  console.log(lists);
+
+  const authEmail = auth?.currentUser?.email as string;
+
+  // useEffect(() => {
+  //   if (lists !== initialLists) {
+  //     saveUserData(authEmail, lists, categories);
+  //   }
+  // }, [lists, categories]);
 
   function addList(list: List) {
     setLists((prevLists) => [...prevLists, list]);
@@ -159,6 +175,7 @@ export function KanbanContextProvider(props: Props) {
   }
 
   function addCategory(category: ModifiedCategory) {
+    console.log(category);
     setCategories((prevCategories) => [...prevCategories, category]);
   }
 
@@ -180,6 +197,23 @@ export function KanbanContextProvider(props: Props) {
     );
   }
 
+  function onSetContext(lists: List[], categories: ModifiedCategory[]) {
+    const modifiedLists = lists.map((list) => {
+      const modifiedItems = list.items.map((item) => {
+        return {
+          ...item,
+          category: transformFirebaseObject(item.category.fields),
+        };
+      });
+      return {
+        ...list,
+        items: modifiedItems,
+      };
+    });
+    setLists(modifiedLists);
+    setCategories(categories);
+  }
+
   const value = {
     lists: lists,
     categories: categories,
@@ -190,6 +224,7 @@ export function KanbanContextProvider(props: Props) {
     onCategoryAdd: addCategory,
     onCategoryToggle: toggleCategory,
     onCategoryRemove: removeCategory,
+    onContextSet: onSetContext,
   };
 
   return (

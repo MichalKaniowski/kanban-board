@@ -70,13 +70,11 @@ export default function SideMenu({
     <div className={sideMenuClasses}>
       {isScreenSmall && isMenuOpen && (
         <>
-          {isMenuOpen && (
-            <FontAwesomeIcon
-              icon={faX}
-              onClick={onMenuToggle}
-              className={styles["menu-icon"]}
-            />
-          )}
+          <FontAwesomeIcon
+            icon={faX}
+            onClick={onMenuToggle}
+            className={styles["menu-icon"]}
+          />
           {sideMenuContent}
         </>
       )}

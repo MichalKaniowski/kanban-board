@@ -1,0 +1,23 @@
+.form * {
+  margin: 5px;
+  color: #fff;
+}
+
+.form input {
+  padding: 5px;
+  color: #000;
+}
+
+.form p {
+  cursor: pointer;
+  margin-top: 20px;
+}
+
+.form p:hover {
+  opacity: 0.7;
+}
+
+.form button {
+  padding: 5px;
+  color: #000;
+}

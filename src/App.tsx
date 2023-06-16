@@ -1,10 +1,10 @@
+import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { useEffect, useState, useContext } from "react";
 import styles from "./App.module.css";
-import SideMenu from "./components/sidemenu/SideMenu";
-import KanbanBoard from "./components/kanbanboard/KanbanBoard";
-import { KanbanContextProvider } from "./store/KanbanContext";
-import { ScreenContextProvider } from "./store/ScreenContext";
 import { ScreenContext } from "./store/ScreenContext";
+import Auth from "./components/auth/Auth";
+import Application from "./components/Application";
+import { List } from "./components/kanbanboard/KanbanBoard.types";
 
 function App() {
   const [themeIsDark, setThemeIsDark] = useState(false);
@@ -12,10 +12,6 @@ function App() {
   const [isScreenSmall, setIsScreenSmall] = useState(window.innerWidth < 800);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const screenContext = useContext(ScreenContext);
-
-  useEffect(() => {
-    screenContext.onScreenSizeChange(isScreenSmall);
-  }, [isScreenSmall]);
 
   function resize() {
     setIsScreenSmall(window.innerWidth < 800);
@@ -28,6 +24,10 @@ function App() {
 
     return () => removeEventListener("resize", resize);
   }, []);
+
+  useEffect(() => {
+    screenContext.onScreenSizeChange(isScreenSmall);
+  }, [isScreenSmall]);
 
   useEffect(() => {
     if (
@@ -59,25 +59,23 @@ function App() {
       <main
         className={`${styles.main} ${isMenuOpen ? styles["menu-open"] : ""}`}
       >
-        <ScreenContextProvider>
-          <SideMenu
-            isScreenSmall={isScreenSmall}
-            isMenuOpen={isMenuOpen}
-            onMenuToggle={toggleMenuHandler}
-          />
-
-          <KanbanContextProvider>
-            {!isMenuOpen && (
-              <KanbanBoard
-                onThemeChange={themeChangeHandler}
-                themeIsDark={themeIsDark}
-                isScreenSmall={isScreenSmall}
-                isMenuOpen={isMenuOpen}
-                onMenuToggle={toggleMenuHandler}
-              />
-            )}
-          </KanbanContextProvider>
-        </ScreenContextProvider>
+        <BrowserRouter>
+          <Routes>
+            <Route
+              path="/"
+              element={
+                <Application
+                  isScreenSmall={isScreenSmall}
+                  isMenuOpen={isMenuOpen}
+                  themeIsDark={themeIsDark}
+                  onMenuToggle={toggleMenuHandler}
+                  onThemeChange={themeChangeHandler}
+                />
+              }
+            />
+            <Route path="/auth" element={<Auth />} />
+          </Routes>
+        </BrowserRouter>
       </main>
     </div>
   );

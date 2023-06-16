@@ -7,8 +7,11 @@ import KanbanList from "./KanbanList";
 import NewKanbanList from "./NewKanbanList";
 import NewCategoryModal from "./NewCategoryModal";
 import { KanbanContext } from "../../store/KanbanContext";
-import { ModifiedCategory } from "./KanbanBoard.types";
+import { List, ModifiedCategory } from "./KanbanBoard.types";
 import Modal from "../ui/Modal";
+// import { getLists } from "../../utils/kanban-utils";
+import { auth, db } from "../auth/firebase";
+import { collection, onSnapshot } from "firebase/firestore";
 
 type Props = {
   onThemeChange: (themeIsDark: boolean) => void;
@@ -30,8 +33,32 @@ export default function KanbanBoard({
   const [inputValue, setInputValue] = useState("");
   const [isCategoryModalOpen, setIsCategoryModalOpen] = useState(false);
   const [error, setError] = useState("");
+  const [lists, setLists] = useState<List[]>(kanbanContext.lists);
 
   const kanbanListsLength = kanbanContext.lists.length;
+  const authEmail = auth?.currentUser?.email as string;
+
+  useEffect(() => {
+    setLists(kanbanContext.lists);
+  }, [kanbanContext.lists]);
+
+  // function saveLists(lists: List[]) {
+  //   setLists(lists);
+  // }
+
+  // useEffect(() => {
+  // const usersCollection = collection(db, "testusers");
+  // onSnapshot(usersCollection, () => {
+  //   getLists(authEmail, saveLists);
+  // });
+  // getLists(authEmail, saveLists);
+  // }, []);
+
+  // useEffect(() => {
+  //   const lists = kanbanContext.lists;
+  //   // console.log(lists);
+  //   setLists(lists);
+  // }, [kanbanContext]);
 
   useEffect(() => {
     setCategories(kanbanContext.categories);
@@ -66,8 +93,6 @@ export default function KanbanBoard({
     const lastItem = listsContainer.children[listsLength - 1];
     lastItem.scrollIntoView({ behavior: "smooth", inline: "end" });
   }, [kanbanListsLength]);
-
-  const lists = kanbanContext.lists;
 
   function addListHandler(newList: string) {
     kanbanContext.onListAdd({ id: nanoid(), name: newList, items: [] });

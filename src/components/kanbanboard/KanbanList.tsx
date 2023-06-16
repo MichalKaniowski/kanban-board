@@ -12,6 +12,7 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import Modal from "../ui/Modal";
 import { ModifiedCategory } from "./KanbanBoard.types";
+import { transformFirebaseObject } from "../../utils/kanban-utils";
 
 type Props = {
   id: string;
@@ -28,7 +29,21 @@ export default function KanbanList({
   categories,
   inputValue,
 }: Props) {
-  const [filteredItems, setFilteredItems] = useState(items);
+  // console.log(items);
+  const initialItems = items.map((item) => {
+    const category = item.category;
+
+    return {
+      ...item,
+      category: {
+        id: category.id,
+        name: category.name,
+        backgroundColor: category.backgroundColor,
+      },
+    };
+  });
+  console.log("intitial items: ", initialItems);
+  const [filteredItems, setFilteredItems] = useState(initialItems);
   const [isModalDisplayed, setIsModalDisplayed] = useState(false);
   const [editingItem, setEditingItem] = useState<ListItem | null>(null);
   const [error, setError] = useState("");
@@ -45,9 +60,12 @@ export default function KanbanList({
       .filter((category) => category.active)
       .map((category) => category.name);
 
-    const itemsFilteredByCategorie = items.filter((item) =>
-      activeCategories.includes(item.category.name)
-    );
+    const itemsFilteredByCategorie = initialItems.filter((item) => {
+      console.log(item.category.name);
+      return activeCategories.includes(item.category.name);
+    });
+
+    console.log(itemsFilteredByCategorie);
 
     const itemsFilteredByInputValue = itemsFilteredByCategorie.filter((item) =>
       item.name.toLowerCase().includes(inputValue.trim().toLowerCase())
@@ -73,7 +91,6 @@ export default function KanbanList({
 
   function addItemHandler(item: ListItem) {
     setIsModalDisplayed(false);
-
     kanbanContext.onItemAdd(id, { ...item });
   }
 
