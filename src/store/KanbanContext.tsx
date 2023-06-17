@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   List,
   ListItem,
@@ -101,6 +101,29 @@ const initialCategories: ModifiedCategory[] = [
 export function KanbanContextProvider(props: Props) {
   const [lists, setLists] = useState(initialLists);
   const [categories, setCategories] = useState(initialCategories);
+
+  useEffect(() => {
+    const lsLists = localStorage.getItem("lists") as string;
+    const lsCategories = localStorage.getItem("categories") as string;
+
+    if (lsLists) {
+      setLists(JSON.parse(lsLists));
+    }
+
+    if (lsCategories) {
+      setCategories(JSON.parse(lsCategories));
+    }
+  }, []);
+
+  useEffect(() => {
+    if (lists !== initialLists) {
+      localStorage.setItem("lists", JSON.stringify(lists));
+    }
+
+    if (categories !== initialCategories) {
+      localStorage.setItem("categories", JSON.stringify(categories));
+    }
+  }, [lists]);
 
   function addList(list: List) {
     setLists((prevLists) => [...prevLists, list]);
