@@ -3,7 +3,6 @@ import styles from "./App.module.css";
 import SideMenu from "./components/sidemenu/SideMenu";
 import KanbanBoard from "./components/kanbanboard/KanbanBoard";
 import { KanbanContextProvider } from "./store/KanbanContext";
-import { ScreenContextProvider } from "./store/ScreenContext";
 import { ScreenContext } from "./store/ScreenContext";
 
 function App() {
@@ -59,25 +58,23 @@ function App() {
       <main
         className={`${styles.main} ${isMenuOpen ? styles["menu-open"] : ""}`}
       >
-        <ScreenContextProvider>
-          <SideMenu
-            isScreenSmall={isScreenSmall}
-            isMenuOpen={isMenuOpen}
-            onMenuToggle={toggleMenuHandler}
-          />
+        <SideMenu
+          isScreenSmall={isScreenSmall}
+          isMenuOpen={isMenuOpen}
+          onMenuToggle={toggleMenuHandler}
+        />
 
-          <KanbanContextProvider>
-            {!isMenuOpen && (
-              <KanbanBoard
-                onThemeChange={themeChangeHandler}
-                themeIsDark={themeIsDark}
-                isScreenSmall={isScreenSmall}
-                isMenuOpen={isMenuOpen}
-                onMenuToggle={toggleMenuHandler}
-              />
-            )}
-          </KanbanContextProvider>
-        </ScreenContextProvider>
+        <KanbanContextProvider>
+          {!isMenuOpen && (
+            <KanbanBoard
+              onThemeChange={themeChangeHandler}
+              themeIsDark={themeIsDark}
+              isScreenSmall={isScreenSmall}
+              isMenuOpen={isMenuOpen}
+              onMenuToggle={toggleMenuHandler}
+            />
+          )}
+        </KanbanContextProvider>
       </main>
     </div>
   );

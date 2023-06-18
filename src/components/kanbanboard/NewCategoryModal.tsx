@@ -61,12 +61,14 @@ export default function NewCategoryModal({ onClose }: { onClose: () => void }) {
           circleSize={23}
           onChange={(e) => colorChangeHandler(e.hex)}
         />
-        <button
-          onClick={categoryAddHandler}
-          className={styles["add-category-button"]}
-        >
-          Add
-        </button>
+        <div className={styles["add-category-button-container"]}>
+          <button
+            onClick={categoryAddHandler}
+            className={styles["add-category-button"]}
+          >
+            Add
+          </button>
+        </div>
         <button className={styles["close-modal-button"]} onClick={onClose}>
           <FontAwesomeIcon icon={faX} size="sm" />
         </button>

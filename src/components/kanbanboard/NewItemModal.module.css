@@ -1,17 +1,16 @@
 .modal {
   background-color: rgb(83, 83, 83);
-  width: 400px;
-  /* min-width: 300px;
-  max-width: 500px; */
-  /* min-height: 300px; */
+  width: 90%;
+  max-width: 400px;
+  /* min-width: 300px; */
   padding: 10px 20px;
   border-radius: var(--br-modal);
   color: #fff;
 }
 
-/* .modal.small-screen {
-  width: 300px;
-} */
+.modal.small-screen {
+  top: 10%;
+}
 
 .modal h3 {
   color: inherit;

@@ -8,25 +8,25 @@
 
 .modal h3 {
   color: inherit;
-  margin-bottom: 10px;
-  font-size: 1.35rem;
+  margin-bottom: 15px;
+  margin-top: 5px;
+  font-size: 1.7rem;
 }
 
 .modal input {
   margin-bottom: 15px;
-  padding: 3px;
+  padding: 5px;
+}
+
+.add-category-button-container {
+  display: flex;
+  justify-content: end;
+  margin-top: 30px;
 }
 
 .add-category-button {
-  position: absolute;
-  bottom: 10px;
-  right: 10px;
   padding: 3px 20px;
   cursor: pointer;
-}
-
-.colorpicker {
-  margin-bottom: 200px;
 }
 
 .close-modal-button {
